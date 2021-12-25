@@ -111,7 +111,7 @@ class ApiController extends Controller
       ]);
 
       foreach ($r->detail as $value) {
-        Products::where('id', $value['product'])->decrement('stock', 1);
+        Products::where('id', $value['product'])->decrement('stock', $value['qty']);
         SalesDet::create([
           'sales_idmstr' => $dataHedaer->id,
           'product' => $value['product'],
