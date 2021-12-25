@@ -10,6 +10,7 @@ class SalesMstr extends Model
     use HasFactory;
     protected $table = 'sales_mstr';
     protected $fillable = [
+        'code',
         'date',
         'customer',
         'total_discount',

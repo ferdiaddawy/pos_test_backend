@@ -8,6 +8,7 @@ use App\Models\SalesDet;
 use App\Models\SalesMstr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\Utils;
 
 class ApiController extends Controller
 {
@@ -101,7 +102,7 @@ class ApiController extends Controller
   {
     return DB::transaction(function () use ($r) {
       $dataHedaer = SalesMstr::create([
-        // 'code' => $r->code,
+        'code' => Utils::TransactionCode(),
         'date' => date("Y-m-d"),
         'customer' => $r->header['customer'],
         'total_discount' => $r->header['total_discount'],
@@ -110,6 +111,7 @@ class ApiController extends Controller
       ]);
 
       foreach ($r->detail as $value) {
+        Products::where('id', $value['product'])->decrement('stock', 1);
         SalesDet::create([
           'sales_idmstr' => $dataHedaer->id,
           'product' => $value['product'],
